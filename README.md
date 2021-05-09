@@ -1,4 +1,4 @@
-# DRL-Tutorial
+# DRL-Pytorch-Tutorial
 
 This is a tutorial for deep reinforcement learning (DRL). This tutorial mainly aims at the beginner of DRL. The code is in its simplest version. We mainly focus on the environment of 'CartPole-v0' and 'Pendulum-v0' in [OpenAI-Gym](https://github.com/openai/gym), which could be viewed as MNIST data set in computer vision task. The environment is very simple. Therefore, you could observe the convergence of the code within several minutes (even shorter), even the hyperparameters are not specifically selected. After all, you could use this to quickly learn the principle of several DRL algorithm, but you'd better not use this code for serious experiment.  
 
