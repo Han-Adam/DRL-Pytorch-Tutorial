@@ -13,15 +13,15 @@ A_NUM = env.action_space.n                      # action dimension
 SKILL_NUM = 4                                   # number of skills
 HIDDEN = 256                                    # unit of hidden layer
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-CAPACITY = 500                                  # maximum number of samples stored in memory
-BATCH_SIZE = 256                                # the number of samples for each train
-LR = 0.001                                       # learning rate
+CAPACITY = 1000                                  # maximum number of samples stored in memory
+BATCH_SIZE = 512                                # the number of samples for each train
+LR = 0.003                                       # learning rate
 GAMMA = 0.9                                     # discounting factor
 TAU = 0.05                                      # soft update parameter
 LOG_PROB_REG = 1e-6                             # the minimum value of log_prob, to avoid log(0)
 ALPHA = 0.1                                    # entropy regulation parameters
 MAX_EPISODE = 50                                # maximum episode to play
-START_LEARNING = 256                            # time to start to learn
+START_LEARNING = 512                            # time to start to learn
 RENDER = False                                  # whether render during training process
 
 agent = DIAYN(s_dim=S_DIM,

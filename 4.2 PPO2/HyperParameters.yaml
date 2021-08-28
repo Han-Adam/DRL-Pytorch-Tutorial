@@ -1,0 +1,23 @@
+MAX_EPISODE : 1000       # Max length of training episode
+# 在这个实验中，我们假设游戏的最大长度是确定的
+MAX_STEP : 256           # Max steps for each episode,
+                         # In this case, it is the same with memory length.
+
+S_DIM : 3                # state dimension
+A_DIM : 1                # action dimension
+BOUND : 2                # action bound
+HIDDEN : 32              # width of hidden layer
+DEVICE : 'cpu'           # torch.device
+# GAMMA调成0.99，会让discounted_reward衰减的很慢很慢，到了500步以后才会趋近于0.
+# 小一点的GAMMA（也许）有助于简单任务的收敛
+GAMMA : 0.9              # discounting rate
+LAMBDA : 0.95            # advantage estimation
+EPSILON : 0.2            # threshold for the probability ratio
+# 收敛慢也许是因为learning rate设置的太小了，我们这次还是用大一点的
+LR : 0.001               # learning rate
+# 我们把步长调小以后，每一轮会学习更多次，每一次的经验回报就会更短
+# 收敛更快，但是每一轮训练的时间也更久
+# 在GAMMA==0.9的情况下，8，16，32（best），64，都还可以；128效果差一点
+MEMORY_LEN : 64         # Sample 512 steps for each training
+BATCH_SIZE: 16           # The batch size for each network update
+UPDATE_EPOCH : 10        # Each batch is updated for 5 times

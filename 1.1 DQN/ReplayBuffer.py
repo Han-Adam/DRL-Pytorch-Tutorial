@@ -1,6 +1,19 @@
 import numpy as np
 import torch
 import random
+import torch.nn as nn
+
+class Net(nn.Module):
+    def __init__(self, s_dim, hidden, a_num):
+        super(Net, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(s_dim, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, a_num)
+        )
+
+    def forward(self, s):
+        return self.net(s)
 
 
 class ReplayBuffer:

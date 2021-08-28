@@ -63,12 +63,12 @@ class SAC:
         mean, std = self.policy_net(s)
 
         dist = Normal(mean, std)
+        # 不要加random act，算法会变得不幸
         u = dist.rsample()
         a = torch.tanh(u)
 
         log_prob = dist.log_prob(u) - torch.log(1 - a.pow(2) + log_reg)
         log_prob = log_prob.sum(-1, keepdim=True)
-
         return a, log_prob
 
     def learn(self):
@@ -98,6 +98,7 @@ class SAC:
         self.opt_policy.step()
 
         # update temperature alpha
+        # 如果我们直接设定成固定值，也是可行的
         alpha_loss = -torch.mean(self.log_alpha* (log_prob_new+self.target_entropy).detach())
         self.alpha_optim.zero_grad()
         alpha_loss.backward()
