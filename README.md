@@ -62,7 +62,7 @@ This algorithm generalized the advantage formula. In this artical, the TD-error 
 
 [[1506.02438v4\] High-Dimensional Continuous Control Using Generalized Advantage Estimation (arxiv.org)](https://arxiv.org/abs/1506.02438v4)
 
-3 DDPG
+3.1 DDPG
 
 Recall all the algorithms before, we always have a discrete action space. However, in reality, the action space is always continuous. from now on, we will focus on continuous action space problem.
 
@@ -75,6 +75,8 @@ Now, let the variance of the distribution becomes zero. Then, the policy gradien
 If we use deep neural network to approximate the policy and value function, then, we get DDPG:
 
 [[1509.02971v2\] Continuous control with deep reinforcement learning (arxiv.org)](https://arxiv.org/abs/1509.02971v2)
+
+3.1 DDPG
 
 Also, please refer to this paper for TD3, an improved version of DDPG:
 
