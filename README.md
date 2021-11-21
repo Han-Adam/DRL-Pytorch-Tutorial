@@ -76,7 +76,7 @@ If we use deep neural network to approximate the policy and value function, then
 
 [[1509.02971v2\] Continuous control with deep reinforcement learning (arxiv.org)](https://arxiv.org/abs/1509.02971v2)
 
-3.1 DDPG
+3.2 TD3
 
 Also, please refer to this paper for TD3, an improved version of DDPG:
 
