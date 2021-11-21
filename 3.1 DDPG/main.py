@@ -8,6 +8,7 @@ env = env.unwrapped
 
 S_DIM = env.observation_space.shape[0]          # state dimension
 A_DIM = env.action_space.shape[0]               # action dimension
+print(S_DIM, A_DIM)
 BOUND = env.action_space.high[0]                # bound value of the action
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 CAPACITY = 10000                                # maximum number of samples stored in memory
@@ -20,7 +21,7 @@ VARIANCE_MIN = 0.05                             # the minimum random factor
 GAMMA = 0.9                                     # discounting factor
 TAU = 0.05                                      # soft-update parameters
 MAX_EPISODE = 1000                              # maximum episode to play
-MAX_EP_STEPS = 200                              # maximum steps for each episode
+MAX_EP_STEPS = 256                              # maximum steps for each episode
 START_LEARN_STEP = 256                          # the step for agent start to learn
 RENDER = False                                  # whether render
 
@@ -59,5 +60,5 @@ for episode in range(MAX_EPISODE):
         total_steps += 1
     # show record
     print('Episode:', episode, ' Reward: %i' % int(ep_r))
-    if ep_r > -300:
-        RENDER = True
+    # if ep_r > -300:
+    #     RENDER = True
