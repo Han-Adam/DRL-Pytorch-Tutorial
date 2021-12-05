@@ -14,12 +14,12 @@ BOUND = env.action_space.high[0]                # bound value of the action
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 CAPACITY = 10000                                # maximum number of samples stored in memory
 BATCH_SIZE = 128                                # the number of samples for each train
-LR = 0.005                                      # learning rate
+LR = 0.001                                      # learning rate
 GAMMA = 0.9                                     # discounting factor
 TAU = 0.05                                      # soft update parameter
 LOG_PROB_REG = 1e-6                             # the minimum value of log_prob, to avoid log(0)
 MAX_EPISODE = 1000                              # maximum episode to play
-MAX_EP_STEPS = 200                              # maximum steps for each episode
+MAX_EP_STEPS = 256                              # maximum steps for each episode
 START_LEARNING = 1000                           # time to start to learn
 RENDER = False                                  # whether render
 

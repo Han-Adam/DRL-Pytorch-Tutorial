@@ -8,6 +8,7 @@ env = env.unwrapped
 S_DIM = env.observation_space.shape[0]          # state dimension
 A_NUM = env.action_space.n                      # number of action
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+HIDDEN = 32                                     # hidden node for network
 LR_ACTOR = 0.01                                 # learning rate for actor
 LR_CRITIC = 0.01                                # learning rate for critic
 MAX_LEN = 20                                    # the max length trajectory stored in memory
@@ -18,6 +19,7 @@ RENDER = False                                   # whether render
 agent = A2C(s_dim=S_DIM,
             a_num=A_NUM,
             device=DEVICE,
+            hidden=HIDDEN,
             lr_actor=LR_ACTOR,
             lr_critic=LR_CRITIC,
             max_len=MAX_LEN,
@@ -37,7 +39,7 @@ for episode in range(MAX_EPISODE):
         # reward reshaping
         r = -20 if done else r
         # learn
-        agent.learn(s, a, s_, r, done)
+        agent.store_transition(s, a, s_, r, done)
         # update record
         ep_r += r
         s = s_

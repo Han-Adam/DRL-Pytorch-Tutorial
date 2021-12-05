@@ -8,6 +8,7 @@ env = env.unwrapped
 S_DIM = env.observation_space.shape[0]          # state dimension
 A_NUM = env.action_space.n                      # number of action
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+HIDDEN = 32                                     # hidden node for network
 LR_ACTOR = 0.01                                 # learning rate for actor
 LR_CRITIC = 0.01                                # learning rate for critic
 GAMMA = 0.99                                     # discounting factor
@@ -20,8 +21,10 @@ RENDER = False                                  # whether render
 agent = ActorCritic(s_dim=S_DIM,
                     a_num=A_NUM,
                     device=DEVICE,
+                    hidden=HIDDEN,
                     lr_actor=LR_ACTOR,
                     lr_critic=LR_CRITIC,
+                    memory_len=MEMORY_LEN,
                     gamma=GAMMA,
                     lambda_=LAMBDA
                     )
@@ -36,16 +39,11 @@ while total_steps <= MAX_STEP:
         if RENDER:
             env.render()
         total_steps += 1
-        # interact environment
         a = agent.get_action(s)
         s_, r, done, info = env.step(a)
         # reward reshaping
         r = -20 if done else r
-        # learn
         agent.store_transition(s, a, s_, r, done)
-        if total_steps%MEMORY_LEN == 0:
-            agent.learn()
-        # update record
         ep_r += r
         s = s_
         if done:

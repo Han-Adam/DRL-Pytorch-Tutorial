@@ -18,13 +18,16 @@ class ReplayBuffer:
         self.counter += 1
 
     def get_sample(self):
-        samples_indices = random.choices(range(min(self.capacity,self.counter)), k=self.batch_size)
+        samples_indices = random.choices(range(min(self.capacity, self.counter)), k=self.batch_size)
         samples = np.array(self.memory)[samples_indices]
         s, a, s_, r, done = zip(* samples)
 
-        s = torch.FloatTensor(s).to(self.device)
-        a = torch.unsqueeze(torch.tensor(data=a, dtype=torch.float, device=self.device), dim=-1)
-        s_ = torch.FloatTensor(s_).to(self.device)
-        r = torch.unsqueeze(torch.FloatTensor(r).to(self.device), dim=-1)
-        done = torch.unsqueeze(torch.FloatTensor(done).to(self.device), dim=-1)
+        s = torch.FloatTensor(s).to(self.device)       # [batch, s_dim]
+        a = torch.LongTensor(a).to(self.device)        # [batch, a_dim]
+        s_ = torch.FloatTensor(s_).to(self.device)     # [batch, s_dim]
+        r = torch.FloatTensor(r).to(self.device)       # [batch]
+        r = torch.unsqueeze(r, dim=-1)                 # [batch, 1]
+        done = torch.FloatTensor(done).to(self.device) # [batch]
+        done = torch.unsqueeze(done, dim=-1)           # [batch, 1]
+
         return s, a, s_, r, done

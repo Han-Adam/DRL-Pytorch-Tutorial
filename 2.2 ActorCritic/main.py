@@ -8,6 +8,7 @@ env = env.unwrapped
 S_DIM = env.observation_space.shape[0]          # state dimension
 A_NUM = env.action_space.n                      # number of action
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+HIDDEN = 32                                     # hidden node for network
 LR_ACTOR = 0.01                                 # learning rate for actor
 LR_CRITIC = 0.01                                # learning rate for critic
 GAMMA = 0.9                                     # discounting factor
@@ -17,6 +18,7 @@ RENDER = False                                  # whether render
 agent = ActorCritic(s_dim=S_DIM,
                     a_num=A_NUM,
                     device=DEVICE,
+                    hidden=HIDDEN,
                     lr_actor=LR_ACTOR,
                     lr_critic=LR_CRITIC,
                     gamma=GAMMA

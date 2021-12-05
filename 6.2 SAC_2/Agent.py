@@ -99,7 +99,7 @@ class SAC:
 
         # update temperature alpha
         # 如果我们直接设定成固定值，也是可行的
-        alpha_loss = -torch.mean(self.log_alpha* (log_prob_new+self.target_entropy).detach())
+        alpha_loss = -torch.mean(self.log_alpha * (log_prob_new+self.target_entropy).detach())
         self.alpha_optim.zero_grad()
         alpha_loss.backward()
         self.alpha_optim.step()
