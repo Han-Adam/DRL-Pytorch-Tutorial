@@ -129,5 +129,7 @@ Need a little bit of knowledge of "Information Theory" to understand the proof o
 7 DRQN & RDPG
 
 Combine DQN and DDPG with LSTM.
+
 [Deep Recurrent Q-Learning for Partially Observable MDPs](https://arxiv.org/abs/1507.06527)
+
 [Recurrent Deterministic Policy Gradient Method for Bipedal Locomotion on Rough Terrain Challenge](https://arxiv.org/abs/1710.02896)
