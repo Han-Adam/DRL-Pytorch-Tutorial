@@ -60,6 +60,7 @@ class ActorCritic:
         # update for actor
         prob = self.actor(s)
         dist = Categorical(prob)
+        # (r + \gamma V(s)) * log(\pi(a))
         actor_loss = -td_error * dist.log_prob(a)
         self.opt_actor.zero_grad()
         actor_loss.backward()

@@ -4,12 +4,15 @@ import random
 
 
 class PrioritizedReplayBuffer:
-    def __init__(self, capacity, batch_size, device, rank):
+    def __init__(self, s_dim, capacity, batch_size, rank):
         self.capacity = capacity
-        self.memory = [0]*self.capacity
+        self.s = torch.zeros(size=[capacity, s_dim], dtype=torch.float, requires_grad=False)
+        self.a = torch.zeros(size=[capacity], dtype=torch.long, requires_grad=False)
+        self.s_ = torch.zeros(size=[capacity, s_dim], dtype=torch.float, requires_grad=False)
+        self.r = torch.zeros(size=[capacity], dtype=torch.float, requires_grad=False)
+        self.done = torch.zeros(size=[capacity], dtype=torch.float, requires_grad=False)
         self.priority = np.ones(shape=[self.capacity])
         self.batch_size = batch_size
-        self.device = device
         # whether we use rank or proportional version
         # the setting of alpha/beta follows the original paper
         if rank:
@@ -20,8 +23,11 @@ class PrioritizedReplayBuffer:
 
     def store_transition(self, s, a, s_, r, done):
         index = self.counter % self.capacity
-        done = 0 if done is False else 1
-        self.memory[index] = [s, a, s_, r, done]
+        self.s[index] = torch.tensor(s, dtype=torch.float)
+        self.a[index] = torch.tensor(a, dtype=torch.long)
+        self.s_[index] = torch.tensor(s_, dtype=torch.float)
+        self.r[index] = torch.tensor(r, dtype=torch.float)
+        self.done[index] = torch.tensor(1 if done else 0, dtype=torch.long)
         self.priority[index] = max(self.priority)
         self.counter += 1
 
@@ -43,14 +49,23 @@ class PrioritizedReplayBuffer:
         weight = weight/np.max(weight)
         # get samples
         samples_index = random.choices(range(index), k=self.batch_size, weights=prob)
-        samples = np.array(self.memory)[samples_index]
-        weight = weight[samples_index]
-        s, a, s_, r, done = zip(* samples)
+        s = self.s[samples_index]  # [batch, s_dim]
+        a = self.a[samples_index]  # [batch]
+        s_ = self.s_[samples_index]  # [batch, s_dim]
+        r = self.r[samples_index]  # [batch]
+        done = self.done[samples_index]  # [batch]
+        weight = torch.FloatTensor(weight[samples_index])
 
-        s = torch.FloatTensor(s).to(self.device)
-        a = torch.LongTensor(a).to(self.device)
-        s_ = torch.FloatTensor(s_).to(self.device)
-        r = torch.FloatTensor(r).to(self.device)
-        done = torch.FloatTensor(done).to(self.device)
-        weight = torch.FloatTensor(weight).to(self.device)
+
+
+        # samples = np.array(self.memory)[samples_index]
+        # weight = weight[samples_index]
+        # s, a, s_, r, done = zip(* samples)
+        #
+        # s = torch.FloatTensor(s)
+        # a = torch.LongTensor(a)
+        # s_ = torch.FloatTensor(s_)
+        # r = torch.FloatTensor(r)
+        # done = torch.FloatTensor(done)
+        # weight = torch.FloatTensor(weight)
         return s, a, s_, r, done, weight, samples_index

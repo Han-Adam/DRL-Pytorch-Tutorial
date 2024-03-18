@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from Agent import DQN
 
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v1')
 env = env.unwrapped
 
 S_DIM = env.observation_space.shape[0]          # state dimension
@@ -33,13 +33,13 @@ agent = DQN(s_dim=S_DIM,
 total_steps = 0
 
 for episode in range(MAX_EPISODE):
-    s = env.reset()
+    s, _ = env.reset()
     ep_r = 0
     while True:
         if RENDER: env.render()
         # interact environment
         a = agent.get_action(s)
-        s_, r, done, info = env.step(a)
+        s_, r, done, _, _ = env.step(a)
         # reward reshaping
         # the smaller theta and closer to center the better
         x, x_dot, theta, theta_dot = s_

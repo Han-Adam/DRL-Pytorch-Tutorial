@@ -2,7 +2,7 @@ import gym
 import torch
 from Agent import DDPG
 
-env = gym.make('Pendulum-v0')
+env = gym.make('Pendulum-v1')
 env = env.unwrapped
 
 S_DIM = env.observation_space.shape[0]          # state dimension
@@ -42,13 +42,13 @@ agent = DDPG(s_dim=S_DIM,
 
 total_steps = 0
 for episode in range(MAX_EPISODE):
-    s = env.reset()
+    s, _ = env.reset()
     ep_r = 0
     for ep_step in range(MAX_EP_STEPS):
         if RENDER: env.render()
         # interact environment
         a = agent.get_action(s)
-        s_, r, done, info = env.step(a[0]*BOUND)
+        s_, r, done, _, _ = env.step(a*BOUND)
         # store transition into memory
         agent.memory.store_transition(s, a, s_, r/10, done)
         # time to learn

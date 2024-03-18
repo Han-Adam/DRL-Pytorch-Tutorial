@@ -69,6 +69,7 @@ class A2C:
         prob = self.actor(s)
         dist = Categorical(prob)
         log_prob = dist.log_prob(a)
+        # (discounted_r - V(s)) * log(\pi(a))
         actor_loss = -torch.mean(log_prob * advantage.detach())
         self.opt_actor.zero_grad()
         actor_loss.backward()

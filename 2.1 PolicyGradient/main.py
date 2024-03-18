@@ -2,7 +2,7 @@ import gym
 import torch
 from Agent import PolicyGradient
 
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v1')
 env = env.unwrapped
 
 S_DIM = env.observation_space.shape[0]          # state dimension
@@ -24,14 +24,14 @@ agent = PolicyGradient(s_dim=S_DIM,
 total_steps = 0
 
 for episode in range(MAX_EPISODE):
-    s = env.reset()
+    s, _ = env.reset()
     ep_r = 0
     while True:
         if RENDER:
             env.render()
         # interact environment
         a = agent.get_action(s)
-        s_, r, done, info = env.step(a)
+        s_, r, done, _, _ = env.step(a)
         # store transition into memory
         agent.store_transition(s, a, r)
         # update record

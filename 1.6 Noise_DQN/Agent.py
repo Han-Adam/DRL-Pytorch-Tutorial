@@ -37,7 +37,7 @@ class DQN:
         self.Q_target.load_state_dict(self.Q.state_dict())
 
         # replay buffer, or memory
-        self.memory = ReplayBuffer(capacity, batch_size, device)
+        self.memory = ReplayBuffer(s_dim, capacity, batch_size)
 
     def get_action(self, s):
         # epsilon-greedy(Q)

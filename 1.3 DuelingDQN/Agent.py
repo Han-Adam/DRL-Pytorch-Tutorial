@@ -40,7 +40,7 @@ class DuelingDQN:
         self.Q_target.load_state_dict(self.Q.state_dict())
 
         # experience replay buffer, memory
-        self.memory = ReplayBuffer(capacity, batch_size, device)
+        self.memory = ReplayBuffer(s_dim, capacity, batch_size)
 
     def get_action(self, s):
         # epsilon-greedy(Q)

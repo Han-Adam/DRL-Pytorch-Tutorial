@@ -2,7 +2,7 @@ import gym
 import torch
 from Agent import DQN
 
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v1')
 env = env.unwrapped
 
 S_DIM = env.observation_space.shape[0]          # state dimension
@@ -11,6 +11,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 HIDDEN = 32                                     # hidden node for network
 CAPACITY = 500                                  # maximum number of samples stored in memory
 BATCH_SIZE = 32                                 # the number of samples for each train
+RANK = True                                     # use rank sampling
 LR = 0.01                                       # learning rate
 EPSILON_START = 0.1                             # the initial random factor
 GREEDY_INCREASE = 0.001                         # the increment of random factor for each step
@@ -26,6 +27,7 @@ agent = DQN(s_dim=S_DIM,
             hidden=HIDDEN,
             capacity=CAPACITY,
             batch_size=BATCH_SIZE,
+            rank=RANK,
             lr=LR,
             epsilon_start=EPSILON_START,
             greedy_increase=GREEDY_INCREASE,
@@ -34,14 +36,14 @@ agent = DQN(s_dim=S_DIM,
 total_steps = 0
 
 for episode in range(MAX_EPISODE):
-    s = env.reset()
+    s, _ = env.reset()
     ep_r = 0
     while True:
         if RENDER:
             env.render()
         # interact environment
         a = agent.get_action(s)
-        s_, r, done, info = env.step(a)
+        s_, r, done, _, _ = env.step(a)
         # reward reshaping, the smaller theta and closer to center the better
         x, x_dot, theta, theta_dot = s_
         r1 = (env.x_threshold - abs(x))/env.x_threshold - 0.8

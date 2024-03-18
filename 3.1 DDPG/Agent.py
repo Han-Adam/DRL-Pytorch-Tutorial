@@ -48,7 +48,7 @@ class DDPG:
         self.opt_critic = torch.optim.Adam(self.critic.parameters(), lr=lr_critic)
 
         # replay buffer, or memory
-        self.memory = ReplayBuffer(capacity, batch_size, device)
+        self.memory = ReplayBuffer(s_dim, a_dim, capacity, batch_size)
 
     def get_action(self, s):
         with torch.no_grad():

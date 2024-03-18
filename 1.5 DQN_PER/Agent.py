@@ -42,7 +42,7 @@ class DQN:
         self.Q_target.load_state_dict(self.Q.state_dict())
 
         # replay buffer, or memory
-        self.memory = PrioritizedReplayBuffer(capacity, batch_size, device, rank)
+        self.memory = PrioritizedReplayBuffer(s_dim, capacity, batch_size, rank)
 
     def get_action(self, s):
         # epsilon-greedy(Q)
@@ -65,7 +65,8 @@ class DQN:
             q_target = self.Q_target(s_)
             td_target = r + (1-done) * self.gamma * torch.max(q_target, dim=1).values
             td_error = td_target - q
-        loss = F.mse_loss(q, td_target)
+        loss = torch.mean(weight * (q - td_target) ** 2)
+        # loss = F.mse_loss(q, td_target)
         # train the network
         self.opt.zero_grad()  # clear gradients for next train
         loss.backward()  # backpropagation, compute gradients
